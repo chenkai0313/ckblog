@@ -1,7 +1,7 @@
 package validate
 
 import (
-	"blog/models"
+	"ckblog/models"
 	"github.com/astaxie/beego/validation"
 	"errors"
 )

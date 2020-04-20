@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
-	"blog/controllers"
+	"ckblog/controllers"
 )
 
 //过滤未登陆的用户

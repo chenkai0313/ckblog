@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"blog/models"
-	"blog/validate"
+	"ckblog/models"
+	"ckblog/validate"
 	"fmt"
-	"blog/service"
+	"ckblog/service"
 )
 
 type UserController struct {

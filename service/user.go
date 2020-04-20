@@ -1,8 +1,8 @@
 package service
 
 import (
-	"blog/untils"
-	"blog/models"
+	"ckblog/untils"
+	"ckblog/models"
 	"errors"
 )
 

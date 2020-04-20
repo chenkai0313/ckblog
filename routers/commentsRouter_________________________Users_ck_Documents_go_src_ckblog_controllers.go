@@ -7,7 +7,7 @@ import (
 
 func init() {
 
-    beego.GlobalControllerRouter["blog/controllers:SiteController"] = append(beego.GlobalControllerRouter["blog/controllers:SiteController"],
+    beego.GlobalControllerRouter["ckblog/controllers:SiteController"] = append(beego.GlobalControllerRouter["ckblog/controllers:SiteController"],
         beego.ControllerComments{
             Method: "Index",
             Router: `/backend/site/index`,
@@ -16,7 +16,7 @@ func init() {
             Filters: nil,
             Params: nil})
 
-    beego.GlobalControllerRouter["blog/controllers:SiteController"] = append(beego.GlobalControllerRouter["blog/controllers:SiteController"],
+    beego.GlobalControllerRouter["ckblog/controllers:SiteController"] = append(beego.GlobalControllerRouter["ckblog/controllers:SiteController"],
         beego.ControllerComments{
             Method: "Site",
             Router: `/backend/site/site`,
@@ -25,7 +25,7 @@ func init() {
             Filters: nil,
             Params: nil})
 
-    beego.GlobalControllerRouter["blog/controllers:SiteController"] = append(beego.GlobalControllerRouter["blog/controllers:SiteController"],
+    beego.GlobalControllerRouter["ckblog/controllers:SiteController"] = append(beego.GlobalControllerRouter["ckblog/controllers:SiteController"],
         beego.ControllerComments{
             Method: "Test",
             Router: `/backend/site/test`,
@@ -34,7 +34,7 @@ func init() {
             Filters: nil,
             Params: nil})
 
-    beego.GlobalControllerRouter["blog/controllers:UserController"] = append(beego.GlobalControllerRouter["blog/controllers:UserController"],
+    beego.GlobalControllerRouter["ckblog/controllers:UserController"] = append(beego.GlobalControllerRouter["ckblog/controllers:UserController"],
         beego.ControllerComments{
             Method: "Login",
             Router: `/backend/user/login`,
@@ -43,7 +43,7 @@ func init() {
             Filters: nil,
             Params: nil})
 
-    beego.GlobalControllerRouter["blog/controllers:UserController"] = append(beego.GlobalControllerRouter["blog/controllers:UserController"],
+    beego.GlobalControllerRouter["ckblog/controllers:UserController"] = append(beego.GlobalControllerRouter["ckblog/controllers:UserController"],
         beego.ControllerComments{
             Method: "Out",
             Router: `/backend/user/out`,
@@ -52,7 +52,7 @@ func init() {
             Filters: nil,
             Params: nil})
 
-    beego.GlobalControllerRouter["blog/controllers:UserController"] = append(beego.GlobalControllerRouter["blog/controllers:UserController"],
+    beego.GlobalControllerRouter["ckblog/controllers:UserController"] = append(beego.GlobalControllerRouter["ckblog/controllers:UserController"],
         beego.ControllerComments{
             Method: "Register",
             Router: `/backend/user/register`,

@@ -1,10 +1,10 @@
 package main
 
 import (
-	_ "blog/routers"
-	"blog/comment"
+	_ "ckblog/routers"
+	"ckblog/comment"
 	"github.com/astaxie/beego"
-	"blog/models"
+	"ckblog/models"
 )
 
 

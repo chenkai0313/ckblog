@@ -4,7 +4,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/logs"
 	"strconv"
-	"blog/untils"
+	"ckblog/untils"
 	"fmt"
 )
 

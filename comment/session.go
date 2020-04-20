@@ -3,7 +3,7 @@ package comment
 import (
 	//_ "github.com/astaxie/beego/session/redis"
 	"github.com/astaxie/beego"
-	"blog/comment/enum"
+	"ckblog/comment/enum"
 )
 
 
