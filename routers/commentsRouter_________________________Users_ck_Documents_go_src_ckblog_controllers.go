@@ -45,6 +45,15 @@ func init() {
 
     beego.GlobalControllerRouter["ckblog/controllers:UserController"] = append(beego.GlobalControllerRouter["ckblog/controllers:UserController"],
         beego.ControllerComments{
+            Method: "LoginAct",
+            Router: `/backend/user/loginAct`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["ckblog/controllers:UserController"] = append(beego.GlobalControllerRouter["ckblog/controllers:UserController"],
+        beego.ControllerComments{
             Method: "Out",
             Router: `/backend/user/out`,
             AllowHTTPMethods: []string{"get"},

@@ -6,6 +6,7 @@ import (
 	"ckblog/comment/enum"
 )
 
+const SESSION_NAME  = "uid"
 
 func InitSession(){
 	// 开启session

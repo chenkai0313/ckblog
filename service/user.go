@@ -42,19 +42,19 @@ func(login UserService)Register(user models.User)(bool,error,models.User){
 }
 
 //登陆
-func (login UserService)Login(userName,password string)bool{
+func (login UserService)Login(userName,password string)(bool,models.User){
 	var ExistUser models.User
 	ExistUser =models.GetUserByUserName(userName)
 	if ExistUser.Id ==0 {
-		return  false
+		return  false,ExistUser
 	}
 	var encrypt =untils.Encrypt{}
 	pwdMd5 := encrypt.EncodeMd5([]byte(password))
 	if strings.Compare(pwdMd5, ExistUser.Password) != 0 {
-		return  false
+		return  false,ExistUser
 	}else {
-		return true
+		return true,ExistUser
 	}
 
-	return false
+	return false,ExistUser
 }

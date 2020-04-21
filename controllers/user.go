@@ -6,12 +6,23 @@ import (
 	"ckblog/validate"
 	"fmt"
 	"ckblog/service"
+	"ckblog/comment"
+	"github.com/astaxie/beego/utils/captcha"
+	"github.com/astaxie/beego/cache"
 )
 
 type UserController struct {
 	beego.Controller
 }
 
+var cpt *captcha.Captcha
+func init() {
+	store := cache.NewMemoryCache()
+	cpt = captcha.NewWithFilter("/captcha/", store) //一定要写在构造函数里面，要不然第一次打开页面有可能是X
+	cpt.ChallengeNums = 4
+	cpt.StdWidth = 100
+	cpt.StdHeight = 40
+}
 var userService service.UserService
 
 //@router /backend/user/register
@@ -41,42 +52,99 @@ func (c *UserController) Register() {
 
 //@router /backend/user/login
 func (c *UserController) Login() {
-	flash := beego.NewFlash()
-	c.Data["Website"] = "beego.me"
-	if c.Ctx.Input.IsPost() {
+	//fmt.Println("login提交了")
+
+	//if c.Ctx.Input.Method() == "POST" {
+	//	fmt.Println("数据提交了")
+	//	flash := beego.NewFlash()
+	//	userName := c.GetString("userName")
+	//	password := c.GetString("password")
+	//	captcha := c.GetString("captcha")
+	//	c.Data["userName"] = userName
+	//	c.Data["password"] = password
+	//	c.Data["captcha"] = captcha
+	//
+	//	if !cpt.VerifyReq(c.Ctx.Request) {
+	//			flash.Error("验证码错误")
+	//			flash.Store(&c.Controller)
+	//			c.TplName = "login/login.html"
+	//			return
+	//	}
+	//
+	//	//判断session是否存在
+	//	us := c.GetSession(comment.SESSION_NAME)
+	//	if us == nil {
+	//		if resBool,user:=userService.Login(userName,password);resBool{
+	//			//设置session
+	//			c.SetSession(comment.SESSION_NAME,user)
+	//			c.Redirect("/backend/site/index",302)
+	//			return
+	//		}else {
+	//			flash.Error("帐号或密码错误")
+	//			flash.Store(&c.Controller)
+	//
+	//
+	//			c.TplName = "login/login.html"
+	//			return
+	//		}
+	//	}else {
+	//		c.Redirect("/backend/site/index",302)
+	//		return
+	//	}
+	//}
+	c.TplName = "login/login.html"
+	return
+}
+
+//@router /backend/user/loginAct [post]
+func (c *UserController) LoginAct() {
+		fmt.Println("数据提交了")
+		flash := beego.NewFlash()
 		userName := c.GetString("userName")
 		password := c.GetString("password")
+		//captcha := c.GetString("captcha")
+		//c.Data["userName"] = userName
+		//c.Data["password"] = password
+		//c.Data["captcha"] = captcha
+
+		if !cpt.VerifyReq(c.Ctx.Request) {
+			flash.Error("验证码错误")
+			flash.Store(&c.Controller)
+			c.TplName = "login/login.html"
+			return
+		}
+
 		//判断session是否存在
-		us := c.GetSession("login_session")
+		us := c.GetSession(comment.SESSION_NAME)
 		if us == nil {
-			if userService.Login(userName,password){
+			if resBool,user:=userService.Login(userName,password);resBool{
 				//设置session
-				c.SetSession(userName+"session"+password, "session")
+				c.SetSession(comment.SESSION_NAME,user)
 				c.Redirect("/backend/site/index",302)
+				c.Data["uid"]=user
 				return
 			}else {
-				flash.Error("帐号密码错误")
+				flash.Error("帐号或密码错误")
 				flash.Store(&c.Controller)
-				c.Data["userName"] = userName
-				c.Data["password"] = password
-
+				//c.TplName = "login/login.html"
 				c.TplName = "login/login.html"
+				//c.Redirect("/backend/user/login",302)
 				return
 			}
 		}else {
 			c.Redirect("/backend/site/index",302)
 			return
 		}
-	}
-	c.TplName = "login/login.html"
-	return
 }
 
 
 //@router /backend/user/out
 func (c *UserController) Out() {
+	//fmt.Println(c.GetSession(comment.SESSION_NAME))
+	c.DelSession(comment.SESSION_NAME)
+	//c.Data["user"]=c.GetSession(comment.SESSION_NAME)
 
-	c.DelSession("uid")
+	c.Redirect("/backend/user/login",302)
+	return
 
-	c.TplName = "login/out.html"
 }
