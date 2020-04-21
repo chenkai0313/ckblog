@@ -4,6 +4,7 @@ import (
 	"ckblog/untils"
 	"ckblog/models"
 	"errors"
+	"strings"
 )
 
 
@@ -15,12 +16,12 @@ func(login UserService)Register(user models.User)(bool,error,models.User){
 	//判断用户是否存在
 	var ExistUser models.User
 	ExistUser =models.GetUserByUserName(user.UserName)
-	if ExistUser != (models.User{}){
+	if ExistUser.Id != 0 {
 		return  false,errors.New("user name exist"),models.User{}
 	}
 
 	ExistUser =models.GetUserByEmail(user.Email)
-	if ExistUser != (models.User{}){
+	if ExistUser.Id !=0 {
 
 		return  false,errors.New("user email exist"),models.User{}
 	}
@@ -41,3 +42,19 @@ func(login UserService)Register(user models.User)(bool,error,models.User){
 }
 
 //登陆
+func (login UserService)Login(userName,password string)bool{
+	var ExistUser models.User
+	ExistUser =models.GetUserByUserName(userName)
+	if ExistUser.Id ==0 {
+		return  false
+	}
+	var encrypt =untils.Encrypt{}
+	pwdMd5 := encrypt.EncodeMd5([]byte(password))
+	if strings.Compare(pwdMd5, ExistUser.Password) != 0 {
+		return  false
+	}else {
+		return true
+	}
+
+	return false
+}

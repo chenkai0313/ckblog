@@ -5,7 +5,6 @@ import (
 	"github.com/astaxie/beego/logs"
 	"strconv"
 	"ckblog/untils"
-	"fmt"
 )
 
 const USER_TABLE_NAME = "user"
@@ -45,7 +44,6 @@ func GetUserByUserName(userName string) User {
 		logs.Error("get user info by user_name fail: ", err)
 	}
 
-	fmt.Println("user",userInfo)
 	return userInfo
 }
 

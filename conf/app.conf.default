@@ -1,0 +1,15 @@
+appname = blog
+httpport = 8080
+runmode = dev
+
+
+redisHostname=""
+redisDatabase=0
+redisPort=313
+redisPassword=""
+
+
+mysqlDsn="root:123123123@tcp(11.11.11.11:3306)/blog"
+
+
+
