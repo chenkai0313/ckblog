@@ -52,46 +52,7 @@ func (c *UserController) Register() {
 
 //@router /backend/user/login
 func (c *UserController) Login() {
-	//fmt.Println("login提交了")
 
-	//if c.Ctx.Input.Method() == "POST" {
-	//	fmt.Println("数据提交了")
-	//	flash := beego.NewFlash()
-	//	userName := c.GetString("userName")
-	//	password := c.GetString("password")
-	//	captcha := c.GetString("captcha")
-	//	c.Data["userName"] = userName
-	//	c.Data["password"] = password
-	//	c.Data["captcha"] = captcha
-	//
-	//	if !cpt.VerifyReq(c.Ctx.Request) {
-	//			flash.Error("验证码错误")
-	//			flash.Store(&c.Controller)
-	//			c.TplName = "login/login.html"
-	//			return
-	//	}
-	//
-	//	//判断session是否存在
-	//	us := c.GetSession(comment.SESSION_NAME)
-	//	if us == nil {
-	//		if resBool,user:=userService.Login(userName,password);resBool{
-	//			//设置session
-	//			c.SetSession(comment.SESSION_NAME,user)
-	//			c.Redirect("/backend/site/index",302)
-	//			return
-	//		}else {
-	//			flash.Error("帐号或密码错误")
-	//			flash.Store(&c.Controller)
-	//
-	//
-	//			c.TplName = "login/login.html"
-	//			return
-	//		}
-	//	}else {
-	//		c.Redirect("/backend/site/index",302)
-	//		return
-	//	}
-	//}
 	c.TplName = "login/login.html"
 	return
 }
@@ -102,10 +63,10 @@ func (c *UserController) LoginAct() {
 		flash := beego.NewFlash()
 		userName := c.GetString("userName")
 		password := c.GetString("password")
-		//captcha := c.GetString("captcha")
-		//c.Data["userName"] = userName
-		//c.Data["password"] = password
-		//c.Data["captcha"] = captcha
+		captcha := c.GetString("captcha")
+		c.Data["userName"] = userName
+		c.Data["password"] = password
+		c.Data["captcha"] = captcha
 
 		if !cpt.VerifyReq(c.Ctx.Request) {
 			flash.Error("验证码错误")
@@ -126,9 +87,7 @@ func (c *UserController) LoginAct() {
 			}else {
 				flash.Error("帐号或密码错误")
 				flash.Store(&c.Controller)
-				//c.TplName = "login/login.html"
 				c.TplName = "login/login.html"
-				//c.Redirect("/backend/user/login",302)
 				return
 			}
 		}else {
@@ -140,10 +99,7 @@ func (c *UserController) LoginAct() {
 
 //@router /backend/user/out
 func (c *UserController) Out() {
-	//fmt.Println(c.GetSession(comment.SESSION_NAME))
 	c.DelSession(comment.SESSION_NAME)
-	//c.Data["user"]=c.GetSession(comment.SESSION_NAME)
-
 	c.Redirect("/backend/user/login",302)
 	return
 
