@@ -5,6 +5,7 @@ import (
 	"ckblog/comment"
 	"github.com/astaxie/beego"
 	"ckblog/models"
+	"ckblog/controllers"
 )
 
 
@@ -12,19 +13,21 @@ import (
 
 
 func main() {
-	//初始化session
+	//init session
 	comment.InitSession()
-	// 初始化数据库
+	//init mysql
 	models.InitMysql()
 
 	beego.SetStaticPath("/static","static")
-
 
 	// 如果是开发模式，则显示命令信息
 	//isDev := !(beego.AppConfig.String("runmode") != "dev")
 	//if isDev {
 	//	orm.Debug = isDev
 	//}
+
+	//error page
+	beego.ErrorController(&controllers.ErrorController{})
 
 	beego.Run()
 }

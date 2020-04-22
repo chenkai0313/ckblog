@@ -18,7 +18,7 @@ type UserController struct {
 var cpt *captcha.Captcha
 func init() {
 	store := cache.NewMemoryCache()
-	cpt = captcha.NewWithFilter("/captcha/", store) //一定要写在构造函数里面，要不然第一次打开页面有可能是X
+	cpt = captcha.NewWithFilter("/captcha/", store)
 	cpt.ChallengeNums = 4
 	cpt.StdWidth = 100
 	cpt.StdHeight = 40
@@ -59,7 +59,6 @@ func (c *UserController) Login() {
 
 //@router /backend/user/loginAct [post]
 func (c *UserController) LoginAct() {
-		fmt.Println("数据提交了")
 		flash := beego.NewFlash()
 		userName := c.GetString("userName")
 		password := c.GetString("password")
@@ -69,23 +68,23 @@ func (c *UserController) LoginAct() {
 		c.Data["captcha"] = captcha
 
 		if !cpt.VerifyReq(c.Ctx.Request) {
-			flash.Error("验证码错误")
+			flash.Error("Verification code error")
 			flash.Store(&c.Controller)
 			c.TplName = "login/login.html"
 			return
 		}
 
-		//判断session是否存在
+		//determine if the session exists
 		us := c.GetSession(comment.SESSION_NAME)
 		if us == nil {
 			if resBool,user:=userService.Login(userName,password);resBool{
-				//设置session
+				//set session
 				c.SetSession(comment.SESSION_NAME,user)
 				c.Redirect("/backend/site/index",302)
 				c.Data["uid"]=user
 				return
 			}else {
-				flash.Error("帐号或密码错误")
+				flash.Error("account or password incorrect")
 				flash.Store(&c.Controller)
 				c.TplName = "login/login.html"
 				return
