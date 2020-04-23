@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"ckblog/comment"
+	"ckblog/models"
 )
 
 type SiteController struct {
@@ -11,6 +13,9 @@ type SiteController struct {
 
 //@router /backend/site/index
 func (c *SiteController) Index() {
+	userSession := c.GetSession(comment.SESSION_NAME)
+	userInfo:=userSession.(models.User)
+	c.Data["userInfo"]=userInfo
 	c.TplName = "index.html"
 }
 

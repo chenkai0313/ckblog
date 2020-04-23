@@ -13,8 +13,8 @@
                         <span><img alt="image" class="img-circle" src="/static/H/img/profile_small.jpg" /></span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
-                                <span class="text-muted text-xs block">超级管理员</span>
+                               <span class="block m-t-xs"><strong class="font-bold">{{.userInfo.Email}}</strong></span>
+                                <span class="text-muted text-xs block">{{.userInfo.UserName}}</span>
                                 </span>
                         </a>
 
@@ -40,9 +40,10 @@
 
 
                 <li>
-                    <a href="mailbox.html"><i class="fa fa-envelope"></i> <span class="nav-label">文章管理 </span><span class="fa arrow"></span></a>
+                    <a href="#">
+                        <i class="fa fa-envelope"></i> <span class="nav-label">文章管理 </span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a class="J_menuItem" href="mailbox.html">所有文章</a>
+                        <li><a class="J_menuItem" href="/backend/article/backendIndex">所有文章</a>
                         </li>
                         <li><a class="J_menuItem" href="mail_detail.html">草稿</a>
                         </li>
@@ -181,7 +182,7 @@
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/backend/site/site" frameborder="0" data-id="/backend/site/site" seamless></iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">&copy; 2020-2021 <a href="http://www.zi-han.net/" target="_blank">ck's blog</a>
+            <div class="pull-right">&copy; 2020-2021 <a href="#" target="_blank">ck's blog</a>
             </div>
         </div>
     </div>

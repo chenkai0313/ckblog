@@ -1,0 +1,141 @@
+{{template "layout/ifram_header.html"}}
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <form action="/backend/article/backendIndex" method="get">
+            <div class="col-lg-12 col-sm-12 col-sm-12" style="margin-bottom: -35px;">
+                <div class="col-lg-12 col-sm-12 col-sm-12 " style="background-color: #fff; padding: 10px">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-xxs ">
+                        <div class="input-group "><span class="input-group-addon">标题</span>
+                            <input type="text" class="form-control" id="article_title" name="title">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-xxs ">
+                        <div class="input-group ">
+                            <span class="input-group-addon">类别</span>
+                            <select id="article_category_id" class="form-control" name="category_id"
+                                    style="-webkit-appearance: none;-webkit-border-radius: 0px">
+                                <option value="0">全部</option>
+                                <option value="1">golang</option>
+                                <option value="2">php</option>
+                                <option value="3">linux</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-xxs ">
+                        <div class="input-group ">
+                            <span class="input-group-addon">排序</span>
+                            <select id="article_sort" class="form-control" name="sort"
+                                    style="-webkit-appearance: none;-webkit-border-radius: 0px">
+                                <option value="1">顺序</option>
+                                <option value="2">倒序</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-xxs ">
+                        <div class="input-group ">
+                            <span class="input-group-addon">是否展示</span>
+                            <select id="article_is_display" class="form-control" name="is_display"
+                                    style="-webkit-appearance: none;-webkit-border-radius: 0px">
+                                <option value="0">全部</option>
+                                <option value="1">发布</option>
+                                <option value="2">不发布</option>
+                                <option value="3">草稿</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-xxs ">
+                        <button type="submit" class=" btn btn-success " style="width:100%;">查询</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>类别</th>
+                            <th>排序</th>
+                            <th>是否展示</th>
+                            <th>标题</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{range $index, $elem:=.Data}}
+                        <tr class="gradeX">
+                            <td class="center">{{$elem.Id}}</td>
+                            <td class="center">{{$elem.CategoryIdString}}</td>
+                            <td class="center">{{$elem.Sort}}</td>
+                            <td class="center">{{$elem.IsDisplayString}}</td>
+                            <td>{{$elem.Title}}</td>
+                            <td class="center">{{$elem.CreatedTime}}</td>
+                            <td class="center" style="text-align: center">
+                                <span class="glyphicon glyphicon-pencil" id="article_edit"></span>
+                                <span>  </span>
+                                <span class="glyphicon glyphicon-trash" id="article_delete"></span>
+                            </td>
+                        </tr>
+                        {{end}}
+
+                    </table>
+                {{.Pagination }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(function ($) {
+        //创建从url中获取操作参数的方法
+        function getURLParameter(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var res = window.location.search.substr(1).match(reg);
+            return res ? decodeURIComponent(res[2]) : null;
+        }
+        //调用方法，参数为url中的参数名称
+        var category_id = getURLParameter("category_id");
+        var sort = getURLParameter("sort");
+        var title = getURLParameter("title");
+        var is_display = getURLParameter("is_display");
+
+        if( null != title && ""!= title)
+        {
+            $("#article_title").attr("value",title);
+
+        }
+
+        if( null != category_id && ""!= category_id)
+        {
+            $("#article_category_id").find("option[value="+category_id+"]").attr("selected",true);
+
+        }
+        if( null != sort && ""!= sort)
+        {
+            //设置select选择框的值为option的text=bizTypeByURL时的option属性
+            $("#article_sort").find("option[value="+sort+"]").attr("selected",true);
+
+        }
+        if( null != is_display && ""!= is_display)
+        {
+            //设置select选择框的值为option的text=bizTypeByURL时的option属性
+            $("#article_is_display").find("option[value="+is_display+"]").attr("selected",true);
+        }
+    });
+
+</script>
+{{template "layout/ifram_footer.html"}}

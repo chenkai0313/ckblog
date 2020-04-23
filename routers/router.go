@@ -40,9 +40,10 @@ func init() {
 }
 
 func userLoginRouter() {
-	beego.InsertFilter("/*", beego.BeforeRouter, FilterUser)
+	beego.InsertFilter("/backend/*", beego.BeforeRouter, FilterUser)
 	beego.Include(
 		&controllers.UserController{},
 		&controllers.SiteController{},
+		&controllers.ArticleController{},
 	)
 }

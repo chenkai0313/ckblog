@@ -12,5 +12,5 @@ func InitMysql() {
 	beego.Info("mysql init.....", link)
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 	orm.RegisterDataBase("default", "mysql", link, 30, 30)
-	orm.RegisterModel(new(User))
+	orm.RegisterModel(new(User),new(Article))
 }

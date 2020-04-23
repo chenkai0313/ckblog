@@ -9,6 +9,15 @@ func init() {
 
     beego.GlobalControllerRouter["ckblog/controllers:SiteController"] = append(beego.GlobalControllerRouter["ckblog/controllers:SiteController"],
         beego.ControllerComments{
+            Method: "BackendIndex",
+            Router: `/backend/article/backendIndex`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["ckblog/controllers:SiteController"] = append(beego.GlobalControllerRouter["ckblog/controllers:SiteController"],
+        beego.ControllerComments{
             Method: "Index",
             Router: `/backend/site/index`,
             AllowHTTPMethods: []string{"get"},
