@@ -7,7 +7,25 @@ import (
 
 func init() {
 
-    beego.GlobalControllerRouter["ckblog/controllers:SiteController"] = append(beego.GlobalControllerRouter["ckblog/controllers:SiteController"],
+    beego.GlobalControllerRouter["ckblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["ckblog/controllers:ArticleController"],
+        beego.ControllerComments{
+            Method: "BackendArticleAdd",
+            Router: `/backend/article/backendArticleAdd`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["ckblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["ckblog/controllers:ArticleController"],
+        beego.ControllerComments{
+            Method: "BackendArticleDel",
+            Router: `/backend/article/backendArticleDel`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["ckblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["ckblog/controllers:ArticleController"],
         beego.ControllerComments{
             Method: "BackendIndex",
             Router: `/backend/article/backendIndex`,

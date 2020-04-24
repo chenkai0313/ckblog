@@ -1,0 +1,71 @@
+
+<div class="modal fade" id="articleModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="articleModalLabel">文章添加</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/backend/article/backendArticleAdd" method="post" enctype="multipart/form-data">
+                    <span>11231</span>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">标题:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="post_title" maxlength="255">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">正文:</label>
+                        <textarea class="form-control" name="post_content" data-provide="markdown" rows="10"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text"  class="control-label">创建时间:</label>
+                        <div>
+                            <input class="form-control" name="post_created_time" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">排序:</label>
+                        <input type="number" class="form-control" id="recipient-name" name="post_sort">
+                    </div>
+
+                    <div class="form-group">
+                        <label  class="control-label">是否展示:</label>
+                        <select id="article_is_display" class="form-control" name="post_is_display"
+                                style="-webkit-appearance: none;-webkit-border-radius: 0px">
+                            <option value="0">全部</option>
+                            <option value="1">发布</option>
+                            <option value="2">不发布</option>
+                            <option value="3">草稿</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label  class="control-label">类别:</label>
+                        <select id="article_is_display" class="form-control" name="post_category_id"
+                                style="-webkit-appearance: none;-webkit-border-radius: 0px">
+                            <option value="0">全部</option>
+                            <option value="1">golang</option>
+                            <option value="2">php</option>
+                            <option value="3">linux</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Send message</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $('#articleModal').on('show.bs.modal', function (event) {
+    })
+</script>

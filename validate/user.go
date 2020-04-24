@@ -6,11 +6,9 @@ import (
 	"errors"
 )
 
-type UserValidate struct {
+type UserValidate struct {}
 
-}
-
-func (user UserValidate)RegisterValite(u models.User) error {
+func (user *UserValidate)RegisterValite(u models.User) error {
 	valid := validation.Validation{}
 	valid.Required(u.UserName, "user_name")
 	valid.Required(u.Email, "emil")
@@ -23,12 +21,11 @@ func (user UserValidate)RegisterValite(u models.User) error {
 			return  errors.New(err.Key+" "+err.Message)
 		}
 	}
-
 	return nil
 }
 
 
-func (user UserValidate)LoginValite(u models.User) error {
+func (user *UserValidate)LoginValite(u models.User) error {
 	valid := validation.Validation{}
 	valid.Required(u.UserName, "user_name")
 	valid.Required(u.Password, "password")
@@ -39,7 +36,6 @@ func (user UserValidate)LoginValite(u models.User) error {
 			return  errors.New(err.Key+" "+err.Message)
 		}
 	}
-
 	return nil
 }
 

@@ -12,7 +12,7 @@ type UserService  struct{}
 
 
 //注册
-func(login UserService)Register(user models.User)(bool,error,models.User){
+func(login *UserService)Register(user models.User)(bool,error,models.User){
 	//判断用户是否存在
 	var ExistUser models.User
 	ExistUser =models.GetUserByUserName(user.UserName)
@@ -42,7 +42,7 @@ func(login UserService)Register(user models.User)(bool,error,models.User){
 }
 
 //登陆
-func (login UserService)Login(userName,password string)(bool,models.User){
+func (login *UserService)Login(userName,password string)(bool,models.User){
 	var ExistUser models.User
 	ExistUser =models.GetUserByUserName(userName)
 	if ExistUser.Id ==0 {

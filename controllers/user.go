@@ -23,7 +23,9 @@ func init() {
 	cpt.StdWidth = 100
 	cpt.StdHeight = 40
 }
-var userService service.UserService
+var userService=service.UserService{}
+var userValidate=validate.UserValidate{}
+
 
 //@router /backend/user/register
 func (c *UserController) Register() {
@@ -31,7 +33,6 @@ func (c *UserController) Register() {
 	newUser.Email = "as123d@qq.com"
 	newUser.Password = "123456"
 	newUser.UserName = "admin123"
-	var userValidate validate.UserValidate
 
 	if err := userValidate.RegisterValite(newUser); err != nil {
 		fmt.Println(err)
@@ -52,7 +53,6 @@ func (c *UserController) Register() {
 
 //@router /backend/user/login
 func (c *UserController) Login() {
-
 	c.TplName = "login/login.html"
 	return
 }

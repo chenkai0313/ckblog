@@ -48,7 +48,7 @@ func stringInterception(str string,length int)  string{
 	}
 }
 
-func (article ArticleService) GetArticleList(params map[string]string, pageSize int, pageNow int) []ArticlesList {
+func (article *ArticleService) GetArticleList(params map[string]string, pageSize int, pageNow int) []ArticlesList {
 	var articlesList []ArticlesList
 	articles := models.GetArticlesListByParams(params, pageSize, pageNow)
 	categoryList := CategoryList()
@@ -70,13 +70,20 @@ func (article ArticleService) GetArticleList(params map[string]string, pageSize 
 		}
 		articlesList=append(articlesList,rl)
 	}
-
 	return articlesList
 }
 
-func (article ArticleService) GetArticleListCount(params map[string]string) int {
-
+func (article *ArticleService) GetArticleListCount(params map[string]string) int {
 	articlesCounts := models.GetArticlesCountByParams(params)
 	articlesCountsInt, _ := strconv.Atoi(strconv.FormatInt(articlesCounts, 10))
 	return articlesCountsInt
+}
+
+func  (article *ArticleService) DelArtilceById (id int) bool{
+	return models.DelArticleById(id)
+}
+
+func (article *ArticleService)AddArticle(art models.Article) bool  {
+	resBool,_:=models.InsertArticle(art)
+	return  resBool
 }

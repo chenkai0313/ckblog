@@ -5,16 +5,34 @@ import (
 	"ckblog/service"
 	"ckblog/untils"
 	"html/template"
+	"ckblog/comment"
+	"fmt"
+	"ckblog/validate"
+	"strconv"
+	"ckblog/models"
 )
 
 type ArticleController struct {
 	beego.Controller
 }
 
-var articlesService service.ArticleService
+var articlesService= service.ArticleService{}
+var response = comment.Response{}
+var articleValidate = validate.ArticleValidate{}
+
 
 //@router /backend/article/backendIndex
-func (c *SiteController) BackendIndex() {
+func (c *ArticleController) BackendIndex() {
+
+	flashGet:=beego.ReadFromRequest(&c.Controller)
+	flash := beego.NewFlash()
+	if n,ok:=flashGet.Data["notice"];ok{
+		flash.Notice(n)
+	}else if n,ok=flashGet.Data["error"];ok{
+		flash.Error(n)
+	}else{
+		flash.Warning(n)
+	}
 
 	var pageSize = 10
 
@@ -35,6 +53,45 @@ func (c *SiteController) BackendIndex() {
 	pagination:=untils.Pagination(articlesCounts,pageNow,pageSize,params)
 	c.Data["Pagination"]=template.HTML(pagination)
 
-
 	c.TplName = "article/list.html"
+}
+
+//@router /backend/article/backendArticleDel
+func (c *ArticleController) BackendArticleDel() {
+	flash := beego.NewFlash()
+	id, err := c.GetInt("id")
+	if err != nil {
+		flash.Error("Params error")
+	}
+	if !articlesService.DelArtilceById(id){
+		flash.Error("Delete fail")
+	}else {
+		flash.Notice("success")
+	}
+
+	flash.Store(&c.Controller)
+	c.Redirect("/backend/article/backendIndex",302)
+
+	return
+}
+
+
+//@router /backend/article/backendArticleAdd [post]
+func (c *ArticleController) BackendArticleAdd() {
+	var article models.Article
+	article.Title=c.GetString("post_title")
+	article.Content=c.GetString("post_content")
+	article.CreatedTime=c.GetString("post_created_time")
+	PostCategoryIdInt, _ := strconv.Atoi(c.GetString("post_category_id"))
+	article.CategoryId=PostCategoryIdInt
+	PostIsDisplayInt, _ := strconv.Atoi(c.GetString("post_is_display"))
+	article.IsDisplay=PostIsDisplayInt
+	PostSortInt, _ := strconv.Atoi(c.GetString("post_sort"))
+	article.Sort=PostSortInt
+
+
+
+	fmt.Println("add article params",article)
+	c.Redirect("/backend/article/backendIndex",302)
+
 }

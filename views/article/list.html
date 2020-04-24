@@ -1,4 +1,14 @@
-{{template "layout/ifram_header.html"}}
+{{template "layout/ifram_header.html" .}}
+<script src="/static/H/js/plugins/layer/layer.min.js"></script>
+<script src="/static/H/js/plugins/sweetalert/sweetalert.min.js"></script>
+<link href="/static/H/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/static/H/css/plugins/markdown/bootstrap-markdown.min.css" />
+
+<script type="text/javascript" src="/static/H/js/plugins/markdown/markdown.js"></script>
+<script type="text/javascript" src="/static/H/js/plugins/markdown/to-markdown.js"></script>
+<script type="text/javascript" src="/static/H/js/plugins/markdown/bootstrap-markdown.js"></script>
+<script type="text/javascript" src="/static/H/js/plugins/markdown/bootstrap-markdown.zh.js"></script>
+<script src="/static/H/js/plugins/layer/laydate/laydate.js"></script>
 
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -50,12 +60,22 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-xxs ">
                         <button type="submit" class=" btn btn-success " style="width:100%;">查询</button>
                     </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 p-xxs ">
+                        <button type="reset" class=" btn btn-success " style="width:100%;">重置</button>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 p-xxs ">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#articleModal" data-whatever="">添加</button>
+                    </div>
                 </div>
             </div>
         </form>
 
     </div>
 </div>
+
+{{template "article/add.html"}}
+
+
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
@@ -76,7 +96,7 @@
                         <tbody>
                         {{range $index, $elem:=.Data}}
                         <tr class="gradeX">
-                            <td class="center">{{$elem.Id}}</td>
+                            <td class="center" >{{$elem.Id}}</td>
                             <td class="center">{{$elem.CategoryIdString}}</td>
                             <td class="center">{{$elem.Sort}}</td>
                             <td class="center">{{$elem.IsDisplayString}}</td>
@@ -85,7 +105,9 @@
                             <td class="center" style="text-align: center">
                                 <span class="glyphicon glyphicon-pencil" id="article_edit"></span>
                                 <span>  </span>
-                                <span class="glyphicon glyphicon-trash" id="article_delete"></span>
+                                <span class="glyphicon glyphicon-eye-open" id="article_detail"></span>
+                                <span class="glyphicon glyphicon-trash article_delete"  data-url="/backend/article/backendArticleDel?id={{$elem.Id}}"></span>
+
                             </td>
                         </tr>
                         {{end}}
@@ -100,7 +122,41 @@
 </div>
 
 <script>
+
+
     jQuery(function ($) {
+
+        {{/*$("#article_add").click(function () {*/}}
+
+            {{/*layer.open({*/}}
+                {{/*type: 1,*/}}
+                {{/*skin: 'layui-layer-rim', //加上边框*/}}
+                {{/*area: ['420px', '240px'], //宽高*/}}
+                {{/*content: '{{template "article/add.html"}}'*/}}
+            {{/*});*/}}
+
+        {{/*});*/}}
+
+
+        $('.article_delete').each(function(){
+            $(this).click(function () {
+                var url=$(this).attr("data-url");
+                console.log("url",url)
+                swal({
+                    title: "您确定要删除这条信息吗",
+                    text: "删除后将无法恢复，请谨慎操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "删除",
+                    closeOnConfirm: false
+                }, function () {
+                    window.location.href = url;
+                });
+            });
+        });
+
+
         //创建从url中获取操作参数的方法
         function getURLParameter(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -138,4 +194,4 @@
     });
 
 </script>
-{{template "layout/ifram_footer.html"}}
+{{template "layout/ifram_footer.html" .}}
