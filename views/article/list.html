@@ -2,7 +2,7 @@
 <script src="/static/H/js/plugins/layer/layer.min.js"></script>
 <script src="/static/H/js/plugins/sweetalert/sweetalert.min.js"></script>
 <link href="/static/H/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/static/H/css/plugins/markdown/bootstrap-markdown.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/H/css/plugins/markdown/bootstrap-markdown.min.css"/>
 
 <script type="text/javascript" src="/static/H/js/plugins/markdown/markdown.js"></script>
 <script type="text/javascript" src="/static/H/js/plugins/markdown/to-markdown.js"></script>
@@ -26,10 +26,10 @@
                             <span class="input-group-addon">类别</span>
                             <select id="article_category_id" class="form-control" name="category_id"
                                     style="-webkit-appearance: none;-webkit-border-radius: 0px">
-                                <option value="0">全部</option>
-                                <option value="1">golang</option>
-                                <option value="2">php</option>
-                                <option value="3">linux</option>
+                            {{range $index, $elem:=.CategoryType}}
+                                <option value="{{$index}}">{{$elem}}</option>
+                            {{end}}
+
                             </select>
 
                         </div>
@@ -50,10 +50,10 @@
                             <span class="input-group-addon">是否展示</span>
                             <select id="article_is_display" class="form-control" name="is_display"
                                     style="-webkit-appearance: none;-webkit-border-radius: 0px">
-                                <option value="0">全部</option>
-                                <option value="1">发布</option>
-                                <option value="2">不发布</option>
-                                <option value="3">草稿</option>
+                            {{range $index, $elem:=.IsDisplayType}}
+                                <option value="{{$index}}">{{$elem}}</option>
+                            {{end}}
+
                             </select>
                         </div>
                     </div>
@@ -64,7 +64,9 @@
                         <button type="reset" class=" btn btn-success " style="width:100%;">重置</button>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 p-xxs ">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#articleModal" data-whatever="">添加</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#articleModal"
+                                data-whatever="" style="width:100%;">添加
+                        </button>
                     </div>
                 </div>
             </div>
@@ -73,7 +75,7 @@
     </div>
 </div>
 
-{{template "article/add.html"}}
+{{template "article/add.html" .}}
 
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -96,7 +98,7 @@
                         <tbody>
                         {{range $index, $elem:=.Data}}
                         <tr class="gradeX">
-                            <td class="center" >{{$elem.Id}}</td>
+                            <td class="center">{{$elem.Id}}</td>
                             <td class="center">{{$elem.CategoryIdString}}</td>
                             <td class="center">{{$elem.Sort}}</td>
                             <td class="center">{{$elem.IsDisplayString}}</td>
@@ -106,7 +108,8 @@
                                 <span class="glyphicon glyphicon-pencil" id="article_edit"></span>
                                 <span>  </span>
                                 <span class="glyphicon glyphicon-eye-open" id="article_detail"></span>
-                                <span class="glyphicon glyphicon-trash article_delete"  data-url="/backend/article/backendArticleDel?id={{$elem.Id}}"></span>
+                                <span class="glyphicon glyphicon-trash article_delete"
+                                      data-url="/backend/article/backendArticleDel?id={{$elem.Id}}"></span>
 
                             </td>
                         </tr>
@@ -126,29 +129,27 @@
 
     jQuery(function ($) {
 
-        {{/*$("#article_add").click(function () {*/}}
-
-            {{/*layer.open({*/}}
-                {{/*type: 1,*/}}
-                {{/*skin: 'layui-layer-rim', //加上边框*/}}
-                {{/*area: ['420px', '240px'], //宽高*/}}
-                {{/*content: '{{template "article/add.html"}}'*/}}
-            {{/*});*/}}
-
-        {{/*});*/}}
+        // layer.open({
+        //     type: 2,
+        //     title: 'layer mobile页',
+        //     shadeClose: true,
+        //     shade: 0.8,
+        //     area: ['380px', '90%'],
+        //     content: 'mobile/' //iframe的url
+        // });
 
 
-        $('.article_delete').each(function(){
+        $('.article_delete').each(function () {
             $(this).click(function () {
-                var url=$(this).attr("data-url");
-                console.log("url",url)
+                var url = $(this).attr("data-url");
+                console.log("url", url)
                 swal({
                     title: "您确定要删除这条信息吗",
                     text: "删除后将无法恢复，请谨慎操作！",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "删除",
+                    confirmButtonText: "sure",
                     closeOnConfirm: false
                 }, function () {
                     window.location.href = url;
@@ -163,33 +164,30 @@
             var res = window.location.search.substr(1).match(reg);
             return res ? decodeURIComponent(res[2]) : null;
         }
+
         //调用方法，参数为url中的参数名称
         var category_id = getURLParameter("category_id");
         var sort = getURLParameter("sort");
         var title = getURLParameter("title");
         var is_display = getURLParameter("is_display");
 
-        if( null != title && ""!= title)
-        {
-            $("#article_title").attr("value",title);
+        if (null != title && "" != title) {
+            $("#article_title").attr("value", title);
 
         }
 
-        if( null != category_id && ""!= category_id)
-        {
-            $("#article_category_id").find("option[value="+category_id+"]").attr("selected",true);
+        if (null != category_id && "" != category_id) {
+            $("#article_category_id").find("option[value=" + category_id + "]").attr("selected", true);
 
         }
-        if( null != sort && ""!= sort)
-        {
+        if (null != sort && "" != sort) {
             //设置select选择框的值为option的text=bizTypeByURL时的option属性
-            $("#article_sort").find("option[value="+sort+"]").attr("selected",true);
+            $("#article_sort").find("option[value=" + sort + "]").attr("selected", true);
 
         }
-        if( null != is_display && ""!= is_display)
-        {
+        if (null != is_display && "" != is_display) {
             //设置select选择框的值为option的text=bizTypeByURL时的option属性
-            $("#article_is_display").find("option[value="+is_display+"]").attr("selected",true);
+            $("#article_is_display").find("option[value=" + is_display + "]").attr("selected", true);
         }
     });
 

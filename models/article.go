@@ -33,7 +33,7 @@ func GetArticleById(id int) Article {
 	return articleInfo
 }
 
-func InsertArticle(article Article) (bool, Article) {
+func InsertArticle(article Article) (bool, error,Article) {
 	var articleInfo Article
 	o := orm.NewOrm()
 	nowTime := untils.GetBasicDateTime()
@@ -41,11 +41,11 @@ func InsertArticle(article Article) (bool, Article) {
 	artId, err := o.Insert(&article)
 	if err != nil {
 		logs.Error("insert article fail: ", err)
-		return false, articleInfo
+		return false, err,articleInfo
 	}
 	artIdInt, _ := strconv.Atoi(strconv.FormatInt(artId, 10))
 	articleInfo = GetArticleById(artIdInt)
-	return true, articleInfo
+	return true, nil,articleInfo
 }
 
 func GetArticlesByParams(params map[string]string) []Article {

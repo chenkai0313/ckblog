@@ -6,7 +6,6 @@ import (
 	"ckblog/untils"
 	"html/template"
 	"ckblog/comment"
-	"fmt"
 	"ckblog/validate"
 	"strconv"
 	"ckblog/models"
@@ -52,7 +51,12 @@ func (c *ArticleController) BackendIndex() {
 	c.Data["Data"] = articles
 	pagination:=untils.Pagination(articlesCounts,pageNow,pageSize,params)
 	c.Data["Pagination"]=template.HTML(pagination)
-
+	CategoryList:=articlesService.CategoryList()
+	delete(CategoryList,0)
+	c.Data["CategoryType"]=CategoryList
+	IsDisplayList:=articlesService.IsDisplayList()
+	delete(IsDisplayList,0)
+	c.Data["IsDisplayType"]=IsDisplayList
 	c.TplName = "article/list.html"
 }
 
@@ -78,6 +82,7 @@ func (c *ArticleController) BackendArticleDel() {
 
 //@router /backend/article/backendArticleAdd [post]
 func (c *ArticleController) BackendArticleAdd() {
+	flash := beego.NewFlash()
 	var article models.Article
 	article.Title=c.GetString("post_title")
 	article.Content=c.GetString("post_content")
@@ -89,9 +94,24 @@ func (c *ArticleController) BackendArticleAdd() {
 	PostSortInt, _ := strconv.Atoi(c.GetString("post_sort"))
 	article.Sort=PostSortInt
 
-
-
-	fmt.Println("add article params",article)
+	if err := articleValidate.AddArticle(article); err != nil {
+		flash.Error(err.Error())
+		c.Redirect("/backend/article/backendIndex",302)
+		return
+	}
+	if resBool,err:=articlesService.AddArticle(article);!resBool{
+		flash.Error(err.Error())
+		c.Redirect("/backend/article/backendIndex",302)
+		return
+	}
+	flash.Notice("success")
+	flash.Store(&c.Controller)
 	c.Redirect("/backend/article/backendIndex",302)
+	return
 
 }
+
+////@router /backend/article/backendArticleAdd [post]
+//func (c *ArticleController) BackendArticleEdit() {
+//	c.TplName = "article/edit.html"
+//}

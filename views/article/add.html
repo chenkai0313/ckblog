@@ -8,7 +8,6 @@
             </div>
             <div class="modal-body">
                 <form action="/backend/article/backendArticleAdd" method="post" enctype="multipart/form-data">
-                    <span>11231</span>
 
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">标题:</label>
@@ -36,10 +35,9 @@
                         <label  class="control-label">是否展示:</label>
                         <select id="article_is_display" class="form-control" name="post_is_display"
                                 style="-webkit-appearance: none;-webkit-border-radius: 0px">
-                            <option value="0">全部</option>
-                            <option value="1">发布</option>
-                            <option value="2">不发布</option>
-                            <option value="3">草稿</option>
+                        {{range $index, $elem:=.IsDisplayType}}
+                            <option value="{{$index}}">{{$elem}}</option>
+                        {{end}}
                         </select>
                     </div>
 
@@ -47,16 +45,15 @@
                         <label  class="control-label">类别:</label>
                         <select id="article_is_display" class="form-control" name="post_category_id"
                                 style="-webkit-appearance: none;-webkit-border-radius: 0px">
-                            <option value="0">全部</option>
-                            <option value="1">golang</option>
-                            <option value="2">php</option>
-                            <option value="3">linux</option>
+                        {{range $index, $elem:=.CategoryType}}
+                            <option value="{{$index}}">{{$elem}}</option>
+                        {{end}}
                         </select>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Send message</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
                     </div>
                 </form>
 

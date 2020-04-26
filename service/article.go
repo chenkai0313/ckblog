@@ -22,16 +22,17 @@ type ArticlesList struct {
 	UpdatedTime      string
 }
 
-func CategoryList() map[int]string {
+func (article *ArticleService)CategoryList() map[int]string {
 	category := make(map[int]string)
 	category[0] = "全部"
 	category[1] = "Golang"
 	category[2] = "PHP"
 	category[3] = "Linux"
+	category[3] = "碎语"
 	return category
 }
 
-func IsDisplayList() map[int]string {
+func (article *ArticleService)IsDisplayList() map[int]string {
 	isDisplay := make(map[int]string)
 	isDisplay[0] = "全部"
 	isDisplay[1] = "发布"
@@ -51,8 +52,8 @@ func stringInterception(str string,length int)  string{
 func (article *ArticleService) GetArticleList(params map[string]string, pageSize int, pageNow int) []ArticlesList {
 	var articlesList []ArticlesList
 	articles := models.GetArticlesListByParams(params, pageSize, pageNow)
-	categoryList := CategoryList()
-	isDisplayList := IsDisplayList()
+	categoryList := article.CategoryList()
+	isDisplayList :=article.IsDisplayList()
 
 	for _, v := range articles {
 		rl := ArticlesList{
@@ -83,7 +84,9 @@ func  (article *ArticleService) DelArtilceById (id int) bool{
 	return models.DelArticleById(id)
 }
 
-func (article *ArticleService)AddArticle(art models.Article) bool  {
-	resBool,_:=models.InsertArticle(art)
-	return  resBool
+func (article *ArticleService)AddArticle(art models.Article) (bool,error)  {
+	if resBool,err,_:=models.InsertArticle(art);!resBool{
+		return false,err
+	}
+	return  true,nil
 }
