@@ -9,7 +9,6 @@ import (
 	"strconv"
 	"ckblog/models"
 	"ckblog/comment"
-	"fmt"
 )
 
 type ArticleController struct {
@@ -152,13 +151,11 @@ func (c *ArticleController) BackendArticleEdit() {
 		msg string
 	)
 
-	fmt.Println("article article article",article)
 	if err := articleValidate.AddArticle(article); err != nil {
 		flash.Error(err.Error())
 		code = comment.CODE_PARMAS_ERROR
 		msg=err.Error()
 
-		fmt.Println("validate error msg",msg)
 		goto stopRun
 
 	}

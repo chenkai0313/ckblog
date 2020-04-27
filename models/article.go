@@ -5,7 +5,6 @@ import (
 	"github.com/astaxie/beego/logs"
 	"strconv"
 	"ckblog/untils"
-	"fmt"
 )
 
 const Article_TABLE_NAME = "article"
@@ -148,7 +147,6 @@ func DelArticleById(id int) bool {
 	qs := o.QueryTable(Article_TABLE_NAME)
 	qs = qs.Filter("id", id)
 	if _, err := qs.Delete(); err != nil {
-		fmt.Println("deletedeletedeletedelete error",err)
 		logs.Error("delete article by id  fail ", err)
 		return false
 	}
