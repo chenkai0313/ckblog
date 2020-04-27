@@ -22,7 +22,7 @@ type ArticlesList struct {
 	UpdatedTime      string
 }
 
-func (article *ArticleService)CategoryList() map[int]string {
+func (article *ArticleService) CategoryList() map[int]string {
 	category := make(map[int]string)
 	category[0] = "全部"
 	category[1] = "Golang"
@@ -32,7 +32,7 @@ func (article *ArticleService)CategoryList() map[int]string {
 	return category
 }
 
-func (article *ArticleService)IsDisplayList() map[int]string {
+func (article *ArticleService) IsDisplayList() map[int]string {
 	isDisplay := make(map[int]string)
 	isDisplay[0] = "全部"
 	isDisplay[1] = "发布"
@@ -41,11 +41,11 @@ func (article *ArticleService)IsDisplayList() map[int]string {
 	return isDisplay
 }
 
-func stringInterception(str string,length int)  string{
-	if len(str) <length{
-		return  str
-	}else {
-		return  str[0 : length]+"。。。。"
+func stringInterception(str string, length int) string {
+	if len(str) < length {
+		return str
+	} else {
+		return str[0:length] + "。。。。"
 	}
 }
 
@@ -53,7 +53,7 @@ func (article *ArticleService) GetArticleList(params map[string]string, pageSize
 	var articlesList []ArticlesList
 	articles := models.GetArticlesListByParams(params, pageSize, pageNow)
 	categoryList := article.CategoryList()
-	isDisplayList :=article.IsDisplayList()
+	isDisplayList := article.IsDisplayList()
 
 	for _, v := range articles {
 		rl := ArticlesList{
@@ -64,12 +64,12 @@ func (article *ArticleService) GetArticleList(params map[string]string, pageSize
 			Sort:             v.Sort,
 			IsDisplay:        v.IsDisplay,
 			IsDisplayString:  isDisplayList[v.IsDisplay],
-			Title:            stringInterception(v.Title,60),
+			Title:            stringInterception(v.Title, 60),
 			Content:          v.Content,
 			CreatedTime:      v.CreatedTime,
 			UpdatedTime:      v.UpdatedTime,
 		}
-		articlesList=append(articlesList,rl)
+		articlesList = append(articlesList, rl)
 	}
 	return articlesList
 }
@@ -80,13 +80,23 @@ func (article *ArticleService) GetArticleListCount(params map[string]string) int
 	return articlesCountsInt
 }
 
-func  (article *ArticleService) DelArtilceById (id int) bool{
+func (article *ArticleService) DelArtilceById(id int) bool {
 	return models.DelArticleById(id)
 }
 
-func (article *ArticleService)AddArticle(art models.Article) (bool,error)  {
-	if resBool,err,_:=models.InsertArticle(art);!resBool{
-		return false,err
+func (article *ArticleService) AddArticle(art models.Article) (bool, error) {
+	if resBool, err, _ := models.InsertArticle(art); !resBool {
+		return false, err
 	}
-	return  true,nil
+	return true, nil
+}
+
+func (article *ArticleService) GetArticleById(id int) models.Article {
+	articlesModel := models.GetArticleById(id)
+	return articlesModel
+}
+
+func (article *ArticleService) UpdateArticle(art models.Article) (bool, error) {
+	resBool, err, _ := models.UpdateArticle(art)
+	return resBool, err
 }

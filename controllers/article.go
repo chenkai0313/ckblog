@@ -5,10 +5,11 @@ import (
 	"ckblog/service"
 	"ckblog/untils"
 	"html/template"
-	"ckblog/comment"
 	"ckblog/validate"
 	"strconv"
 	"ckblog/models"
+	"ckblog/comment"
+	"fmt"
 )
 
 type ArticleController struct {
@@ -16,8 +17,8 @@ type ArticleController struct {
 }
 
 var articlesService= service.ArticleService{}
-var response = comment.Response{}
 var articleValidate = validate.ArticleValidate{}
+var response = comment.Response{}
 
 
 //@router /backend/article/backendIndex
@@ -96,22 +97,86 @@ func (c *ArticleController) BackendArticleAdd() {
 
 	if err := articleValidate.AddArticle(article); err != nil {
 		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+
 		c.Redirect("/backend/article/backendIndex",302)
 		return
 	}
 	if resBool,err:=articlesService.AddArticle(article);!resBool{
 		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+
 		c.Redirect("/backend/article/backendIndex",302)
 		return
 	}
 	flash.Notice("success")
 	flash.Store(&c.Controller)
+
 	c.Redirect("/backend/article/backendIndex",302)
 	return
 
 }
 
-////@router /backend/article/backendArticleAdd [post]
-//func (c *ArticleController) BackendArticleEdit() {
-//	c.TplName = "article/edit.html"
-//}
+//@router /backend/article/backendArticleEditPage
+func (c *ArticleController) BackendArticleEditPage() {
+	id, _ := c.GetInt("id")
+	article:=articlesService.GetArticleById(id)
+	CategoryList:=articlesService.CategoryList()
+	delete(CategoryList,0)
+	c.Data["CategoryType"]=CategoryList
+	IsDisplayList:=articlesService.IsDisplayList()
+	delete(IsDisplayList,0)
+	c.Data["IsDisplayType"]=IsDisplayList
+	c.Data["Article"]=article
+	c.TplName = "article/edit.html"
+}
+
+//@router /backend/article/backendArticleEdit [post]
+func (c *ArticleController) BackendArticleEdit() {
+	flash := beego.NewFlash()
+	id, _ := c.GetInt("id")
+	var article models.Article
+	article.Id=id
+	article.Title=c.GetString("post_title")
+	article.Content=c.GetString("post_content")
+	article.CreatedTime=c.GetString("post_created_time")
+	PostCategoryIdInt, _ := strconv.Atoi(c.GetString("post_category_id"))
+	article.CategoryId=PostCategoryIdInt
+	PostIsDisplayInt, _ := strconv.Atoi(c.GetString("post_is_display"))
+	article.IsDisplay=PostIsDisplayInt
+	PostSortInt, _ := strconv.Atoi(c.GetString("post_sort"))
+	article.Sort=PostSortInt
+
+	var (
+		code int
+		msg string
+	)
+
+	fmt.Println("article article article",article)
+	if err := articleValidate.AddArticle(article); err != nil {
+		flash.Error(err.Error())
+		code = comment.CODE_PARMAS_ERROR
+		msg=err.Error()
+
+		fmt.Println("validate error msg",msg)
+		goto stopRun
+
+	}
+	if resBool,err:=articlesService.UpdateArticle(article);!resBool{
+		flash.Error(err.Error())
+		code = comment.CODE_PARMAS_ERROR
+		msg=err.Error()
+		goto stopRun
+	}
+	flash.Notice("success")
+
+	code = comment.CODE_SUCCESS
+	msg=""
+
+
+stopRun:
+	flash.Store(&c.Controller)
+	c.Data["json"] = response.JsonFormat(code, "", msg)
+	c.ServeJSON()
+	c.StopRun()
+}

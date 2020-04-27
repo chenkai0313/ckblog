@@ -2,7 +2,6 @@ package untils
 
 import (
 	"strconv"
-	"fmt"
 )
 
 func Pagination(Counts, pageNow, pageSize int, params map[string]string) string {
@@ -28,8 +27,6 @@ func Pagination(Counts, pageNow, pageSize int, params map[string]string) string 
 		str += "<li><a href=\"?pageNow=" + PageNowFront + paramsUrl + "\">&laquo;</a></li>"
 	}
 	PageNow_string := strconv.Itoa(pageNow)
-	fmt.Println("pageCount", pageCount)
-	fmt.Println("pageNow", pageNow)
 	//总页小于10页
 	if pageCount <= 10 {
 		for i := 1; i <= pageCount; i++ {

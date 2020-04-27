@@ -1,19 +1,10 @@
 {{template "layout/ifram_header.html" .}}
-<script src="/static/H/js/plugins/layer/layer.min.js"></script>
-<script src="/static/H/js/plugins/sweetalert/sweetalert.min.js"></script>
-<link href="/static/H/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/static/H/css/plugins/markdown/bootstrap-markdown.min.css"/>
 
-<script type="text/javascript" src="/static/H/js/plugins/markdown/markdown.js"></script>
-<script type="text/javascript" src="/static/H/js/plugins/markdown/to-markdown.js"></script>
-<script type="text/javascript" src="/static/H/js/plugins/markdown/bootstrap-markdown.js"></script>
-<script type="text/javascript" src="/static/H/js/plugins/markdown/bootstrap-markdown.zh.js"></script>
-<script src="/static/H/js/plugins/layer/laydate/laydate.js"></script>
 
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <form action="/backend/article/backendIndex" method="get">
+        <form action="/backend/article/backendIndex" method="get" οnsubmit="return checkAll();" target="_parent" >
             <div class="col-lg-12 col-sm-12 col-sm-12" style="margin-bottom: -35px;">
                 <div class="col-lg-12 col-sm-12 col-sm-12 " style="background-color: #fff; padding: 10px">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-xxs ">
@@ -105,9 +96,8 @@
                             <td>{{$elem.Title}}</td>
                             <td class="center">{{$elem.CreatedTime}}</td>
                             <td class="center" style="text-align: center">
-                                <span class="glyphicon glyphicon-pencil" id="article_edit"></span>
-                                <span>  </span>
-                                <span class="glyphicon glyphicon-eye-open" id="article_detail"></span>
+                                <span class="glyphicon glyphicon-pencil article_edit" data-id="{{$elem.Id}}"></span>
+                                <span class="glyphicon glyphicon-eye-open article_detail" data-id="{{$elem.Id}}"></span>
                                 <span class="glyphicon glyphicon-trash article_delete"
                                       data-url="/backend/article/backendArticleDel?id={{$elem.Id}}"></span>
 
@@ -129,15 +119,19 @@
 
     jQuery(function ($) {
 
-        // layer.open({
-        //     type: 2,
-        //     title: 'layer mobile页',
-        //     shadeClose: true,
-        //     shade: 0.8,
-        //     area: ['380px', '90%'],
-        //     content: 'mobile/' //iframe的url
-        // });
-
+        $('.article_edit').each(function () {
+            $(this).click(function () {
+                var id =$(this).attr("data-id");
+                layer.open({
+                    type: 2,
+                    title: '文章编辑',
+                    shadeClose: true,
+                    shade: 0.2,
+                    area: ['59rem', '93%'],
+                    content: '/backend/article/backendArticleEditPage?id='+id
+                });
+            })
+        });
 
         $('.article_delete').each(function () {
             $(this).click(function () {

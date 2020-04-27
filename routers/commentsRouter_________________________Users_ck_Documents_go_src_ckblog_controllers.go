@@ -27,6 +27,24 @@ func init() {
 
     beego.GlobalControllerRouter["ckblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["ckblog/controllers:ArticleController"],
         beego.ControllerComments{
+            Method: "BackendArticleEdit",
+            Router: `/backend/article/backendArticleEdit`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["ckblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["ckblog/controllers:ArticleController"],
+        beego.ControllerComments{
+            Method: "BackendArticleEditPage",
+            Router: `/backend/article/backendArticleEditPage`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["ckblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["ckblog/controllers:ArticleController"],
+        beego.ControllerComments{
             Method: "BackendIndex",
             Router: `/backend/article/backendIndex`,
             AllowHTTPMethods: []string{"get"},

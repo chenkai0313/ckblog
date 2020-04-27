@@ -33,14 +33,11 @@ var FilterUser = func(ctx *context.Context) {
 }
 
 func init() {
-	//beego.Router("/",  &controllers.UserController{},"*:Login")
-	//beego.Router("/backend/user/login", &controllers.UserController{},"*:Login")
-	//beego.Router("/backend/register", &controllers.UserController{},"*:Register")
 	userLoginRouter()
 }
 
 func userLoginRouter() {
-	//beego.InsertFilter("/backend/*", beego.BeforeRouter, FilterUser)
+	beego.InsertFilter("/backend/*", beego.BeforeRouter, FilterUser)
 	beego.Include(
 		&controllers.UserController{},
 		&controllers.SiteController{},

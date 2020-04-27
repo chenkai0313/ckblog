@@ -1,0 +1,100 @@
+{{template "layout/ifram_header.html" .}}
+<body>
+
+<div tabindex="-1" role="dialog" aria-labelledby="articleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+
+            <div class="modal-body">
+                <form  enctype="multipart/form-data" id="editArticleForm">
+                    <input type="hidden" name="id" value="{{.Article.Id}}">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">标题:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="post_title" maxlength="255"
+                               value="{{.Article.Title}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">正文:</label>
+                        <textarea class="form-control" name="post_content" data-provide="markdown" rows="10"
+                                  value="{{.Article.Content}}">{{.Article.Content}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">创建时间:</label>
+                        <div>
+                            <input class="form-control" value="{{.Article.CreatedTime}}" name="post_created_time"
+                                   placeholder="YYYY-MM-DD hh:mm:ss"
+                                   onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">排序:</label>
+                        <input type="number" class="form-control" id="recipient-name" name="post_sort"
+                               value="{{.Article.Sort}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">是否展示:</label>
+                        <select id="article_is_display" class="form-control" name="post_is_display"
+                                style="-webkit-appearance: none;-webkit-border-radius: 0px">
+                        {{range $index, $elem:=.IsDisplayType}}
+                            <option value="{{$index}}"{{if compare  $index $.Article.IsDisplay }} selected{{end}}
+                            >{{$elem}}</option>
+                        {{end}}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">类别:</label>
+                        <select id="article_is_display" class="form-control" name="post_category_id"
+                                style="-webkit-appearance: none;-webkit-border-radius: 0px">
+                        {{range $index, $elem:=.CategoryType}}
+                            <option value="{{$index}}" {{if compare  $index $.Article.CategoryId }} selected{{end}}>{{$elem}}</option>
+                        {{end}}
+                        </select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                        <button type="submit" class="btn btn-primary " id="editArticle" >提交</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+    jQuery(function ($) {
+        $("#editArticle").click(function () {
+            var data= $('#editArticleForm').serialize()
+            console.log("data",data)
+            $.ajax({
+                //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "/backend/article/backendArticleEdit" ,//url
+                async:false,
+                data: data,
+                success: function (result) {
+                    console.log("result",result);//打印服务端返回的数据(调试用)
+                        layer.closeAll();
+                        parent.location.href = "/backend/article/backendIndex";
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+        });
+
+    });
+
+</script>
+</body>
+{{template "layout/ifram_footer.html" .}}
