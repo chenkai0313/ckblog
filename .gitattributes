@@ -1,2 +1,2 @@
-*.html linguist-language=Go
+*.html linguist-language=Golang
 views/* linguist-vendored
