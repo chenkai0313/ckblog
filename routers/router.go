@@ -42,5 +42,6 @@ func userLoginRouter() {
 		&controllers.UserController{},
 		&controllers.SiteController{},
 		&controllers.ArticleController{},
+		&controllers.ArticleController{},
 	)
 }
