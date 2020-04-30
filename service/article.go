@@ -18,6 +18,7 @@ type ArticlesList struct {
 	IsDisplayString  string
 	Title            string
 	Content          string
+	ReadTimes        int
 	CreatedTime      string
 	UpdatedTime      string
 }
@@ -100,3 +101,5 @@ func (article *ArticleService) UpdateArticle(art models.Article) (bool, error) {
 	resBool, err, _ := models.UpdateArticle(art)
 	return resBool, err
 }
+
+

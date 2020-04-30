@@ -17,6 +17,7 @@ type Article struct {
 	IsDisplay   int
 	Title       string
 	Content     string
+	ReadTimes   int
 	CreatedTime string
 	UpdatedTime string
 }
@@ -32,7 +33,7 @@ func GetArticleById(id int) Article {
 	return articleInfo
 }
 
-func UpdateArticle(article Article) (bool, error,Article) {
+func UpdateArticle(article Article) (bool, error, Article) {
 	var articleInfo Article
 	o := orm.NewOrm()
 	nowTime := untils.GetBasicDateTime()
@@ -40,14 +41,14 @@ func UpdateArticle(article Article) (bool, error,Article) {
 	artId, err := o.Update(&article)
 	if err != nil {
 		logs.Error("update article fail: ", err)
-		return false, err,articleInfo
+		return false, err, articleInfo
 	}
 	artIdInt, _ := strconv.Atoi(strconv.FormatInt(artId, 10))
 	articleInfo = GetArticleById(artIdInt)
-	return true, nil,articleInfo
+	return true, nil, articleInfo
 }
 
-func InsertArticle(article Article) (bool, error,Article) {
+func InsertArticle(article Article) (bool, error, Article) {
 	var articleInfo Article
 	o := orm.NewOrm()
 	nowTime := untils.GetBasicDateTime()
@@ -55,11 +56,11 @@ func InsertArticle(article Article) (bool, error,Article) {
 	artId, err := o.Insert(&article)
 	if err != nil {
 		logs.Error("insert article fail: ", err)
-		return false, err,articleInfo
+		return false, err, articleInfo
 	}
 	artIdInt, _ := strconv.Atoi(strconv.FormatInt(artId, 10))
 	articleInfo = GetArticleById(artIdInt)
-	return true, nil,articleInfo
+	return true, nil, articleInfo
 }
 
 func GetArticlesByParams(params map[string]string) []Article {
