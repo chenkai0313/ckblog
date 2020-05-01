@@ -10,6 +10,7 @@ type BlogController struct {
 	beego.Controller
 }
 
+
 //@router /blog/article/blogCategory
 func (c *ArticleController) BlogCategory() {
 	categoryList := articlesService.CategoryList()
