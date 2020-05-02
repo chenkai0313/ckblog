@@ -170,7 +170,6 @@ func (c *ArticleController) BackendArticleEdit() {
 	code = comment.CODE_SUCCESS
 	msg=""
 
-
 stopRun:
 	flash.Store(&c.Controller)
 	c.Data["json"] = response.JsonFormat(code, "", msg)
