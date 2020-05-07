@@ -12,9 +12,8 @@ import (
 )
 
 type UserController struct {
-	beego.Controller
+   BaseController
 }
-
 var cpt *captcha.Captcha
 func init() {
 	store := cache.NewMemoryCache()
@@ -53,6 +52,14 @@ func (c *UserController) Register() {
 
 //@router /backend/user/login
 func (c *UserController) Login() {
+
+	//logger:=logrus.New()
+	Logger.Infof("server test ","1.0","1234")
+
+	//logger:=logrus.New()
+	//logger.Errorf("test data ","1.0","1234")
+
+	//logger.Infof("test data ","1.0","1234")
 	c.TplName = "login/login.html"
 	return
 }

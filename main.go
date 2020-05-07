@@ -11,7 +11,6 @@ import (
 
 
 
-
 func main() {
 	//init session
 	comment.InitSession()
@@ -20,6 +19,9 @@ func main() {
 
 	beego.SetStaticPath("/static","static")
 
+
+     //var logger comment.Logger
+	//logger.Infof("server end ","1.0","1234")
 	// 如果是开发模式，则显示命令信息
 	//isDev := !(beego.AppConfig.String("runmode") != "dev")
 	//if isDev {
